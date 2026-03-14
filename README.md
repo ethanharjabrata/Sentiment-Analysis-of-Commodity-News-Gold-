@@ -12,6 +12,17 @@ Make a .env file in the root of this repo and put your Access token in the file
 ```
 access_token=(PUT YOUR HUGGING FACE ACCESS TOKEN HERE)
 ```
+
+To run the file, Run
+```
+uv run src/main.py
+```
+This should train the model and print out the predictions for the 3 provided dummy texts
+Once you have trained the model, be sure to comment out 
+```
+train_classifier
+```
+So you don't retrain the model from scratch again
 # Data Sources
 All data taken from [Kaggle](https://www.kaggle.com/datasets/ankurzing/sentiment-analysis-in-commodity-market-gold)
 

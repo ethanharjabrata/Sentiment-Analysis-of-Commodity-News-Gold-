@@ -14,3 +14,4 @@ wheels/
 
 #Hugging Face Stuff
 trainer_output/
+models/

@@ -18,7 +18,7 @@ if __name__ == "__main__":
 
     device=check_device()
     print(f"Using {device}")
-    # train_classifier(device)
+    train_classifier(device)
 
     #Weird case (I have genuinely no clue why the classifier can't recognize this as gold price rising)
     print(get_classification("Investors turn to gold, not bonds, as haven from war in Iran", device))
