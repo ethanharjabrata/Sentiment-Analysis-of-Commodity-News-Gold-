@@ -79,7 +79,9 @@ def train_classifier(device:str):
         save_strategy="epoch",
         load_best_model_at_end=True,
         metric_for_best_model="f1",
-        greater_is_better=True
+        greater_is_better=True,
+        learning_rate=2e-5,
+        warmup_steps=0.1,
     )
     trainer=Trainer(
         model, 
