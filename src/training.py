@@ -1,13 +1,10 @@
 import pandas as pd
-
-# from sklearn.preprocessing import OrdinalEncoder
 from sklearn.model_selection import train_test_split
 import numpy as np
 from transformers import DistilBertTokenizerFast, DistilBertForSequenceClassification, TrainingArguments, Trainer, EarlyStoppingCallback
 from torch.utils.data import Dataset
 from torch import tensor
 from sklearn.metrics import f1_score, accuracy_score
-import pickle
 class GoldDataset(Dataset):
     def __init__(self, encodings, labels):
         self.encodings = encodings
@@ -58,16 +55,24 @@ def train_classifier(device:str):
     data["label"] = data["Price Sentiment"].map(label_map)
     
     # Apparently Bert Tokenizer needs the data to be passed in as a list
-    x_train, x_test, y_train, y_test = train_test_split(
+    x_train, x_temp, y_train, y_temp = train_test_split(
         data['News'].tolist(), 
         data['label'].tolist(), 
         test_size=0.2, 
         stratify=data['label']
     )
+    x_val, x_test, y_val, y_test=train_test_split(
+        x_temp,
+        y_temp,
+        test_size=0.5,
+        stratify=y_temp
+    )
     tokenizer= DistilBertTokenizerFast.from_pretrained("distilbert-base-uncased")
     train_tokens=tokenizer(x_train, padding=True, truncate=True)
+    val_tokens=tokenizer(x_val, padding=True, truncate=True)
     test_tokens=tokenizer(x_test, padding=True, truncate=True)
     train=GoldDataset(train_tokens, y_train)
+    val=GoldDataset(val_tokens, y_val)
     test=GoldDataset(test_tokens, y_test)
     model = DistilBertForSequenceClassification.from_pretrained('distilbert-base-uncased', num_labels=4)
     model.to(device)
@@ -87,16 +92,21 @@ def train_classifier(device:str):
         model, 
         args, 
         train_dataset=train, 
-        eval_dataset=test, 
+        eval_dataset=val, 
         compute_metrics=get_f1_and_acc,
         #should probably jack up patience if you want to make sure you're not in some local max
         callbacks=[EarlyStoppingCallback(early_stopping_patience=2)]
     )
     trainer.train()
+    test_results = trainer.predict(test)
+    
+    # trainer.predict automatically runs compute_metrics, prefixed with "test_"
+    print(f"Test Accuracy: {test_results.metrics['test_accuracy']:.4f}")
+    print(f"Test F1 Score: {test_results.metrics['test_f1']:.4f}\n")
     # Save the trained model weights
     trainer.save_model("./models/gold-sentiment-classifier")
 
-    # Save the tokenizer (crucial so you can process new text later)
+    # Save the tokenizer 
     tokenizer.save_pretrained("./models/gold-sentiment-classifier")
     
     
