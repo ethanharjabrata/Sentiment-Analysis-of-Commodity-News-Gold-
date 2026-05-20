@@ -102,16 +102,24 @@ def summarize_past_future(data: pd.DataFrame) -> None:
         n_past = int(subset["Past Information"].sum())
         n_future = int(subset["Future Information"].sum())
         n_both = int(
-            ((subset["Past Information"] == 1) & (subset["Future Information"] == 1)).sum()
+            (
+                (subset["Past Information"] == 1) & (subset["Future Information"] == 1)
+            ).sum()
         )
 
         n_neither = int(
-            ((subset["Past Information"] == 0) & (subset["Future Information"] == 0)).sum()
+            (
+                (subset["Past Information"] == 0) & (subset["Future Information"] == 0)
+            ).sum()
         )
 
         print(f"  {cls} (n={n}):")
-        print(f"    Past only:   {n_past - n_both:>5}  ({100*(n_past - n_both)/n:.1f}%)")
-        print(f"    Future only: {n_future - n_both:>5}  ({100*(n_future - n_both)/n:.1f}%)")
+        print(
+            f"    Past only:   {n_past - n_both:>5}  ({100*(n_past - n_both)/n:.1f}%)"
+        )
+        print(
+            f"    Future only: {n_future - n_both:>5}  ({100*(n_future - n_both)/n:.1f}%)"
+        )
         print(f"    Both:        {n_both:>5}  ({100*n_both/n:.1f}%)")
         print(f"    Neither:     {n_neither:>5}  ({100*n_neither/n:.1f}%)")
         print()
