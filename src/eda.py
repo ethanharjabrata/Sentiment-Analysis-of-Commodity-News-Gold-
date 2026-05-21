@@ -32,7 +32,7 @@ def load_data(csv_path: str) -> pd.DataFrame:
     return data
 
 
-def summarize_classes(data: pd.DataFrame) -> None:
+def summarise_classes(data: pd.DataFrame) -> None:
     """Prints counts and percentages for each sentiment class.
 
     Args:
@@ -53,7 +53,7 @@ def summarize_classes(data: pd.DataFrame) -> None:
     print(f"  {'TOTAL':<10} {total:>5}\n")
 
 
-def summarize_headline_lengths(data: pd.DataFrame) -> None:
+def summarise_headline_lengths(data: pd.DataFrame) -> None:
     """Prints min, max, mean, and median headline word counts split by class.
 
     Args:
@@ -77,7 +77,7 @@ def summarize_headline_lengths(data: pd.DataFrame) -> None:
     print()
 
 
-def summarize_past_future(data: pd.DataFrame) -> None:
+def summarise_past_future(data: pd.DataFrame) -> None:
     """Prints a Past/Future information breakdown for each sentiment class.
 
     The dataset flags each headline as past-reporting (Past Information=1) or
