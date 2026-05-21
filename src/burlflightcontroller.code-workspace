@@ -1,0 +1,16 @@
+{
+  "folders": [
+	{
+		"name": "Burl_AHS",
+		"path": "../../burlflightcontroller/Burl_AHS"
+	},
+	{
+		"name": "Burl_CFC",
+		"path": "../../burlflightcontroller/Burl_CFC"
+	},
+	{
+		"path": "../../burlflightcontroller/Burl_Bench"
+	}
+],
+  "settings": {}
+}
